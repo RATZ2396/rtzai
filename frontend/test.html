@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - RTZAI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0a0a0f;
+            color: white;
+        }
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #4f46e5;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #1a1a2e;
+            border-radius: 8px;
+            min-height: 100px;
+        }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <h1>RTZAI - Página de Prueba</h1>
+    
+    <h2>1. Test Backend</h2>
+    <button onclick="testBackend()">Probar Backend (GET /videos)</button>
+    
+    <h2>2. Test Generación</h2>
+    <button onclick="testGenerate()">Generar Video de Prueba</button>
+    
+    <h2>Resultado:</h2>
+    <div id="result">Presiona un botón para probar...</div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+        const resultDiv = document.getElementById('result');
+
+        async function testBackend() {
+            resultDiv.innerHTML = '⏳ Probando conexión con backend...';
+            
+            try {
+                const response = await fetch(`${API_URL}/videos`);
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        ✅ Backend funcionando correctamente<br>
+                        Videos en base de datos: ${data.length}<br>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        ❌ Error: ${error.message}<br>
+                        ¿Está corriendo el backend en http://localhost:3000?
+                    </div>
+                `;
+            }
+        }
+
+        async function testGenerate() {
+            resultDiv.innerHTML = '⏳ Generando video de prueba...';
+            
+            try {
+                const formData = new FormData();
+                formData.append('prompt', 'Un astronauta en Marte - TEST');
+                formData.append('duration', '10');
+                formData.append('quality', 'hd');
+
+                const response = await fetch(`${API_URL}/generate`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Error desconocido');
+                }
+
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        ✅ Video generado exitosamente<br>
+                        ID: ${data.id}<br>
+                        Prompt: ${data.prompt}<br>
+                        URL: ${data.url}<br>
+                        Tipo: ${data.type}<br>
+                        <br>
+                        ${data.type === 'video' 
+                            ? `<video src="${data.url}" controls style="max-width: 100%; margin-top: 10px;"></video>`
+                            : `<img src="${data.url}" style="max-width: 100%; margin-top: 10px;">`
+                        }
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        ❌ Error al generar: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Test automático al cargar
+        window.addEventListener('load', () => {
+            console.log('✅ JavaScript cargado correctamente');
+            console.log('API URL:', API_URL);
+        });
+    </script>
+</body>
+</html>

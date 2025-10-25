@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTZAI - Generador de Imágenes con IA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+
+    <main class="container">
+        <section class="user-panel">
+            <div class="user-info">
+                <div class="user-avatar">👤</div>
+                <div class="user-details">
+                    <h3 id="user-name">Usuario</h3>
+                    <p class="user-credits" style="cursor: pointer;" onclick="showCreditsInfo()" title="Click para ver detalles">
+                        💰 <span id="user-credits">0</span> créditos
+                        <small style="display: block; font-size: 11px; color: #888; margin-top: 2px;">
+                            Click para ver planes
+                        </small>
+                    </p>
+                </div>
+            </div>
+            <button id="logout-btn" class="btn-logout">🚪 Cerrar Sesión</button>
+        </section>
+
+        <section class="hero">
+            <h1>RTZAI - Generador de Imágenes con IA</h1>
+            <p>Transforma tus ideas en imágenes increíbles usando inteligencia artificial de última generación</p>
+        </section>
+
+        <section class="generator-section">
+            <div class="input-container">
+                <form id="video-form">
+                    <div class="input-group">
+                        <label for="prompt">Describe tu imagen</label>
+                        <textarea 
+                            id="prompt" 
+                            name="prompt" 
+                            rows="4" 
+                            placeholder="Ej: Un astronauta caminando en Marte al atardecer, cielo naranja, 4K, cinematográfico"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="image-upload">O sube una imagen de referencia (opcional)</label>
+                        <input type="file" id="image-upload" name="image" accept="image/*">
+                    </div>
+
+                    <div class="options-group">
+                        <div class="option">
+                            <label for="ai-provider">Modelo de IA</label>
+                            <select id="ai-provider" name="ai-provider">
+                                <optgroup label="🆓 Gratuito">
+                                    <option value="huggingface" selected>Stable Diffusion XL - 1 crédito</option>
+                                </optgroup>
+                                <optgroup label="💎 Premium">
+                                    <option value="openai">DALL-E 3 (OpenAI) - 11 créditos</option>
+                                    <option value="midjourney">Midjourney - 16 créditos</option>
+                                    <option value="leonardo">Leonardo AI - 13 créditos</option>
+                                    <option value="flux">Flux Pro - 21 créditos</option>
+                                </optgroup>
+                            </select>
+                            <small class="quality-hint" style="color: #667eea;">
+                                💡 Los costos se suman según proveedor y calidad
+                            </small>
+                        </div>
+
+                        <div class="option">
+                            <label for="quality">Calidad</label>
+                            <select id="quality" name="quality">
+                                <option value="standard">Estándar - Sin costo extra</option>
+                                <option value="hd" selected>HD - Sin costo extra</option>
+                                <option value="4k">4K Ultra - +5 créditos</option>
+                            </select>
+                            <small class="quality-hint" id="quality-hint" style="color: #10b981;">
+                                ✨ HD y Estándar sin costo adicional
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="credits-info" id="credits-info" style="display: none;">
+                        <p>⚠️ Este modelo requiere créditos. <a href="#" id="buy-credits-link">Comprar créditos</a></p>
+                    </div>
+
+                    <button type="submit" id="generate-btn" class="btn-primary">
+                        <span class="btn-text">🎨 Generar Imagen</span>
+                        <span class="loader" style="display: none;"></span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="gallery-section">
+            <h2>Galería de Imágenes</h2>
+            <div id="videos-gallery" class="videos-grid">
+                <!-- El contenido se cargará dinámicamente aquí -->
+            </div>
+            <div id="no-videos" class="no-videos">
+                <p>Aún no has generado ninguna imagen. ¡Comienza ahora!</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="components/Navbar.js?v=4"></script>
+    <script src="components/Footer.js?v=4"></script>
+    <script src="components/VideoCard.js?v=4"></script>
+    <script src="script.js?v=4"></script>
+    <script src="credits-modal-fix.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticando con Google...</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .loading-container {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #666;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="spinner"></div>
+        <h2>Autenticando con Google</h2>
+        <p>Por favor espera un momento...</p>
+        <p id="error-message" class="error-message" style="display: none;"></p>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        async function handleGoogleCallback() {
+            try {
+                // Obtener el token de la URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const token = urlParams.get('token');
+                const error = urlParams.get('error');
+
+                if (error) {
+                    throw new Error('Error de autenticación: ' + error);
+                }
+
+                if (!token) {
+                    throw new Error('No se recibió el token de autenticación');
+                }
+
+                // Obtener datos del usuario
+                const response = await fetch(`${API_URL}/api/user`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al obtener datos del usuario');
+                }
+
+                const data = await response.json();
+
+                // Guardar en localStorage
+                localStorage.setItem('token', token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+
+                // Redirigir al dashboard
+                window.location.href = 'index.html';
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('error-message').textContent = error.message;
+                document.getElementById('error-message').style.display = 'block';
+
+                // Redirigir al login después de 3 segundos
+                setTimeout(() => {
+                    window.location.href = 'login.html?error=' + encodeURIComponent(error.message);
+                }, 3000);
+            }
+        }
+
+        // Ejecutar cuando cargue la página
+        handleGoogleCallback();
+    </script>
+</body>
+</html>

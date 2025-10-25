@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes y Precios - RTZAI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .planes-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .planes-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .planes-header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .planes-header p {
+            font-size: 20px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .current-balance {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .current-balance h2 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            opacity: 0.9;
+        }
+
+        .current-balance .balance-amount {
+            font-size: 64px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .current-balance p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .planes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .plan-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .plan-card.popular {
+            border-color: #667eea;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+        }
+
+        .plan-card.popular::before {
+            content: "⭐ MÁS POPULAR";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .plan-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .plan-price {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .plan-price span {
+            font-size: 20px;
+            color: #999;
+        }
+
+        .plan-credits {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+        }
+
+        .plan-features li {
+            padding: 12px 0;
+            color: #555;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .plan-features li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .plan-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .plan-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .plan-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .plan-button.current {
+            background: #10b981;
+        }
+
+        .pricing-info {
+            background: #f7fafc;
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 50px;
+        }
+
+        .pricing-info h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            color: #333;
+        }
+
+        .pricing-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .pricing-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .pricing-item h3 {
+            margin: 0 0 10px 0;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .pricing-item p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .pricing-item .cost {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .planes-header h1 {
+                font-size: 32px;
+            }
+
+            .planes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .current-balance .balance-amount {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+
+    <main class="planes-container">
+        <div class="planes-header">
+            <h1>Planes y Precios</h1>
+            <p>Elige el plan perfecto para tus necesidades creativas</p>
+        </div>
+
+        <div class="current-balance">
+            <h2>Tu Saldo Actual</h2>
+            <div class="balance-amount" id="current-credits">0</div>
+            <p>créditos disponibles</p>
+        </div>
+
+        <div class="planes-grid">
+            <!-- Plan Starter -->
+            <div class="plan-card">
+                <div class="plan-name">Starter</div>
+                <div class="plan-price">$5<span> USD</span></div>
+                <div class="plan-credits">💰 100 créditos</div>
+                <ul class="plan-features">
+                    <li>100 créditos</li>
+                    <li>Genera hasta 100 imágenes HD</li>
+                    <li>Todos los modelos de IA</li>
+                    <li>Soporte por email</li>
+                    <li>Sin fecha de expiración</li>
+                </ul>
+                <button class="plan-button" onclick="purchasePlan('starter')">
+                    Comprar Starter
+                </button>
+            </div>
+
+            <!-- Plan Basic (Más Popular) -->
+            <div class="plan-card popular">
+                <div class="plan-name">Basic</div>
+                <div class="plan-price">$10<span> USD</span></div>
+                <div class="plan-credits">💰 250 créditos</div>
+                <ul class="plan-features">
+                    <li>250 créditos</li>
+                    <li>Genera hasta 250 imágenes HD</li>
+                    <li>Todos los modelos de IA</li>
+                    <li>Soporte prioritario</li>
+                    <li>Sin fecha de expiración</li>
+                    <li>20% de ahorro</li>
+                </ul>
+                <button class="plan-button" onclick="purchasePlan('basic')">
+                    Comprar Basic
+                </button>
+            </div>
+
+            <!-- Plan Pro -->
+            <div class="plan-card">
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">$18<span> USD</span></div>
+                <div class="plan-credits">💰 500 créditos</div>
+                <ul class="plan-features">
+                    <li>500 créditos</li>
+                    <li>Genera hasta 500 imágenes HD</li>
+                    <li>Todos los modelos de IA</li>
+                    <li>Soporte prioritario 24/7</li>
+                    <li>Sin fecha de expiración</li>
+                    <li>28% de ahorro</li>
+                </ul>
+                <button class="plan-button" onclick="purchasePlan('pro')">
+                    Comprar Pro
+                </button>
+            </div>
+
+            <!-- Plan Premium -->
+            <div class="plan-card">
+                <div class="plan-name">Premium</div>
+                <div class="plan-price">$30<span> USD</span></div>
+                <div class="plan-credits">💰 1000 créditos</div>
+                <ul class="plan-features">
+                    <li>1000 créditos</li>
+                    <li>Genera hasta 1000 imágenes HD</li>
+                    <li>Todos los modelos de IA</li>
+                    <li>Soporte premium 24/7</li>
+                    <li>Sin fecha de expiración</li>
+                    <li>40% de ahorro</li>
+                    <li>Acceso anticipado a nuevas funciones</li>
+                </ul>
+                <button class="plan-button" onclick="purchasePlan('premium')">
+                    Comprar Premium
+                </button>
+            </div>
+        </div>
+
+        <div class="pricing-info">
+            <h2>💡 Tabla de Costos por Acción</h2>
+            <div class="pricing-table">
+                <div class="pricing-item">
+                    <h3>🎨 Imagen Básica</h3>
+                    <p>Stable Diffusion XL</p>
+                    <p>Calidad: Estándar / HD</p>
+                    <div class="cost">1 crédito</div>
+                </div>
+
+                <div class="pricing-item">
+                    <h3>✨ Imagen 4K</h3>
+                    <p>Stable Diffusion XL</p>
+                    <p>Calidad: 4K Ultra</p>
+                    <div class="cost">6 créditos</div>
+                </div>
+
+                <div class="pricing-item">
+                    <h3>🤖 DALL-E 3</h3>
+                    <p>OpenAI</p>
+                    <p>Calidad: HD</p>
+                    <div class="cost">11 créditos</div>
+                </div>
+
+                <div class="pricing-item">
+                    <h3>🎭 Midjourney</h3>
+                    <p>Midjourney</p>
+                    <p>Calidad: HD</p>
+                    <div class="cost">16 créditos</div>
+                </div>
+
+                <div class="pricing-item">
+                    <h3>📹 Video Generación</h3>
+                    <p>Cualquier modelo</p>
+                    <p>5 segundos</p>
+                    <div class="cost">5 créditos</div>
+                </div>
+
+                <div class="pricing-item">
+                    <h3>💎 Leonardo AI</h3>
+                    <p>Leonardo AI</p>
+                    <p>Calidad: HD</p>
+                    <div class="cost">13 créditos</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding: 30px; background: white; border-radius: 12px;">
+                <p style="font-size: 18px; color: #666; margin-bottom: 20px;">
+                    💳 <strong>Proximamente:</strong> Integración con Stripe y MercadoPago
+                </p>
+                <p style="font-size: 14px; color: #999;">
+                    Por ahora, los planes están en modo de prueba. Pronto podrás comprar créditos con métodos de pago reales.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="components/Navbar.js?v=4"></script>
+    <script src="components/Footer.js?v=4"></script>
+    <script src="planes.js?v=4"></script>
+</body>
+</html>

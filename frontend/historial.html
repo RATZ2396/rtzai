@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Historial - RTZAI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="components/theme.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>📚 Mi Historial</h1>
+            <p>Todas las imágenes que has generado</p>
+        </div>
+
+        <!-- Filtros y búsqueda -->
+        <div class="filter-bar">
+            <div class="search-box">
+                <label>Buscar</label>
+                <input type="text" id="search-input" placeholder="Buscar por prompt...">
+            </div>
+            
+            <div class="filter-group">
+                <label>Ordenar por</label>
+                <select id="sort-select">
+                    <option value="createdAt-desc">Más recientes</option>
+                    <option value="createdAt-asc">Más antiguas</option>
+                    <option value="likesCount-desc">Más populares</option>
+                    <option value="creditsUsed-desc">Más costosas</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Proveedor IA</label>
+                <select id="provider-filter">
+                    <option value="">Todos</option>
+                    <option value="huggingface">Stable Diffusion XL</option>
+                    <option value="openai">DALL-E 3</option>
+                    <option value="midjourney">Midjourney</option>
+                    <option value="leonardo">Leonardo AI</option>
+                    <option value="flux">Flux Pro</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Calidad</label>
+                <select id="quality-filter">
+                    <option value="">Todas</option>
+                    <option value="standard">Estándar</option>
+                    <option value="hd">HD</option>
+                    <option value="4k">4K Ultra</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Estadísticas rápidas -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎨</div>
+                <div class="stat-value" id="total-images">0</div>
+                <div class="stat-label">Imágenes Generadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value" id="total-credits-spent">0</div>
+                <div class="stat-label">Créditos Gastados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value" id="total-favorites">0</div>
+                <div class="stat-label">Favoritos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👁️</div>
+                <div class="stat-value" id="total-views">0</div>
+                <div class="stat-label">Vistas Totales</div>
+            </div>
+        </div>
+
+        <!-- Galería de imágenes -->
+        <section class="gallery-section">
+            <div id="loading" class="spinner-center" style="display: none;">
+                <div class="spinner"></div>
+            </div>
+            
+            <div id="images-gallery" class="videos-grid">
+                <!-- Las imágenes se cargarán aquí dinámicamente -->
+            </div>
+            
+            <div id="no-images" class="empty-state" style="display: none;">
+                <div class="empty-state-icon">📷</div>
+                <h2 class="empty-state-title">No hay imágenes aún</h2>
+                <p class="empty-state-description">Comienza a crear imágenes increíbles con IA</p>
+                <a href="index.html" class="btn-primary">Generar mi primera imagen</a>
+            </div>
+        </section>
+
+        <!-- Paginación -->
+        <div id="pagination" class="pagination" style="display: none;">
+            <button class="page-btn" id="prev-page">← Anterior</button>
+            <span id="page-info" style="color: var(--text-secondary);"></span>
+            <button class="page-btn" id="next-page">Siguiente →</button>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="components/Navbar.js"></script>
+    <script src="components/Footer.js"></script>
+    <script src="components/VideoCard.js"></script>
+    <script src="script.js"></script>
+    <script src="historial.js"></script>
+</body>
+</html>

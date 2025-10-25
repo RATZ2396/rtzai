@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad - RTZAI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="components/theme.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>👥 Comunidad RTZAI</h1>
+            <p>Descubre las mejores creaciones de nuestra comunidad</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('explore')">🌟 Explorar</button>
+            <button class="tab" onclick="switchTab('trending')">🔥 Tendencias</button>
+            <button class="tab" onclick="switchTab('creators')">👑 Mejores Creadores</button>
+        </div>
+
+        <!-- Filtros para Explorar -->
+        <div id="explore-filters" class="filter-bar">
+            <div class="filter-group">
+                <label>Período</label>
+                <select id="timeframe-filter" onchange="loadCommunityImages()">
+                    <option value="all">Todo el tiempo</option>
+                    <option value="today">Hoy</option>
+                    <option value="week" selected>Esta semana</option>
+                    <option value="month">Este mes</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Ordenar por</label>
+                <select id="sort-filter" onchange="loadCommunityImages()">
+                    <option value="createdAt">Más recientes</option>
+                    <option value="likesCount" selected>Más populares</option>
+                    <option value="views">Más vistas</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Sección Explorar -->
+        <section id="explore-section" class="gallery-section">
+            <div id="loading-explore" class="spinner-center">
+                <div class="spinner"></div>
+            </div>
+            
+            <div id="explore-gallery" class="videos-grid"></div>
+            
+            <div id="no-images-explore" class="empty-state" style="display: none;">
+                <div class="empty-state-icon">🖼️</div>
+                <h2 class="empty-state-title">No hay imágenes públicas aún</h2>
+                <p class="empty-state-description">Sé el primero en compartir tus creaciones</p>
+            </div>
+        </section>
+
+        <!-- Sección Tendencias -->
+        <section id="trending-section" class="gallery-section" style="display: none;">
+            <div id="loading-trending" class="spinner-center">
+                <div class="spinner"></div>
+            </div>
+            
+            <div id="trending-gallery" class="videos-grid"></div>
+            
+            <div id="no-images-trending" class="empty-state" style="display: none;">
+                <div class="empty-state-icon">🔥</div>
+                <h2 class="empty-state-title">No hay tendencias aún</h2>
+            </div>
+        </section>
+
+        <!-- Sección Top Creadores -->
+        <section id="creators-section" style="display: none;">
+            <div id="loading-creators" class="spinner-center">
+                <div class="spinner"></div>
+            </div>
+            
+            <div id="creators-grid" class="stats-grid"></div>
+            
+            <div id="no-creators" class="empty-state" style="display: none;">
+                <div class="empty-state-icon">👑</div>
+                <h2 class="empty-state-title">No hay creadores públicos aún</h2>
+            </div>
+        </section>
+
+        <!-- Paginación -->
+        <div id="pagination" class="pagination" style="display: none;">
+            <button class="page-btn" id="prev-page" onclick="changePage(-1)">← Anterior</button>
+            <span id="page-info" style="color: var(--text-secondary);"></span>
+            <button class="page-btn" id="next-page" onclick="changePage(1)">Siguiente →</button>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="components/Navbar.js"></script>
+    <script src="components/Footer.js"></script>
+    <script src="script.js"></script>
+    <script src="comunidad.js"></script>
+</body>
+</html>
